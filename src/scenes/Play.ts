@@ -9,6 +9,7 @@ export default class Play extends Phaser.Scene {
 
   starfield?: Phaser.GameObjects.TileSprite;
   spinner?: Phaser.GameObjects.Shape;
+  enemy?: Phaser.GameObjects.Shape;
 
   rotationSpeed = Phaser.Math.PI2 / 1000; // radians per millisecond
 
@@ -42,6 +43,7 @@ export default class Play extends Phaser.Scene {
       .setOrigin(0, 0);
 
     this.spinner = this.add.rectangle(325, 450, 20, 20, 0x4def5d);
+    this.enemy = this.add.rectangle(500, 50, 60, 30, 0x4def5d);
   }
 
   update(_timeMs: number, delta: number) {
@@ -61,14 +63,21 @@ export default class Play extends Phaser.Scene {
         targets: this.spinner,
         y: -delta * this.rotationSpeed,
         duration: 2000,
-        onComplete(){
-          this.spinner!.position.set(this.spinner.x,450);
+        onComplete: () => {
+          this.spinner!.setY(450);
+          this.left!.enabled = true;
+          this.right!.enabled = true;
         }
       });
-      this.time.delayedCall(2000, () => {
-        this.left!.enabled = true;
-        this.right!.enabled = true;
-      });
     }
+
+    this.tweens.add({
+      targets: this.enemy,
+      x: -30,
+      duration: 1000,
+      onComplete: () => {
+        this.enemy!.setX(700);
+      }
+    });
   }
 }

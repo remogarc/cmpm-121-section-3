@@ -48,10 +48,10 @@ export default class Play extends Phaser.Scene {
     this.starfield!.tilePositionX -= 4;
 
     if (this.left!.isDown) {
-      this.spinner!.x -= 4;
+      this.spinner!.x -= 3;
     }
     if (this.right!.isDown) {
-      this.spinner!.x += 4;
+      this.spinner!.x += 3;
     }
 
     if (this.fire!.isDown) {
@@ -61,11 +61,13 @@ export default class Play extends Phaser.Scene {
         targets: this.spinner,
         y: -delta * this.rotationSpeed,
         duration: 2000,
+        onComplete(){
+          this.spinner!.position.set(this.spinner.x,450);
+        }
       });
       this.time.delayedCall(2000, () => {
         this.left!.enabled = true;
         this.right!.enabled = true;
-        this.spinner!.y = 450;
       });
     }
   }
